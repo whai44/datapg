@@ -12,6 +12,7 @@ import plotly.graph_objects as go
 df = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/ndrs9-10_2022.csv')
 df['timestamp'] = pd.to_datetime(df['timestamp'])
 df['day_of_week'] = df['timestamp'].dt.day_of_week
+df['hour_of_day'] = df['timestamp'].dt.hour
 car_type_data = df.groupby(df['timestamp'].dt.day_name())[['car']].sum()
 car_type_data['percentage'] = car_type_data['car'] / car_type_data['car'].sum() * 100
 vehicle_types = ['7up',	'bus',	'car',	'motorcycle',	'pickup'	,'trailer'	,'truck'	] 
@@ -64,39 +65,33 @@ ndrs_layout = html.Div([
     ]),
 
 
-    dbc.Row([
-
-        dcc.Dropdown(
-            id='vehicle-dropdown',
-            options=[{'label': vehicle, 'value': vehicle} for vehicle in vehicle_types],
-            value=vehicle_types[0],  # Set default value to the first vehicle type
-            multi=False  # Allow single selection
-        )
-    ]),
+    
 
     dbc.Row([
 
         dcc.Dropdown(
-            id='day-dropdown2',
-            options=[
-                {'label': 'Monday', 'value': 'Monday'},
-                {'label': 'Tuesday', 'value': 'Tuesday'},
-                {'label': 'Wednesday', 'value': 'Wednesday'},
-                {'label': 'Thursday', 'value': 'Thursday'},
-                {'label': 'Friday', 'value': 'Friday'},
-                {'label': 'Saturday', 'value': 'Saturday'},
-                {'label': 'Sunday', 'value': 'Sunday'}
-            ],
-            value='Monday'  # Set default value to Monday
-        ),
+    id='day-of-week-dropdown',
+    options=[
+        {'label': 'Monday', 'value': 0},
+        {'label': 'Tuesday', 'value': 1},
+        {'label': 'Wednesday', 'value': 2},
+        {'label': 'Thursday', 'value': 3},
+        {'label': 'Friday', 'value': 4},
+        {'label': 'Saturday', 'value': 5},
+        {'label': 'Sunday', 'value': 6}
+    ],
+    value=0,  # Set initial value
+    placeholder='Select a day of the week'
+)
+
     ]),
     dbc.Row([
 
-        dcc.Graph(id='bar-chart')
+        dcc.Graph(id='vehicle-counts-chart')
     ])
 
 
-    
+  
     
 
 
@@ -136,17 +131,36 @@ def update_line_chart(days):
         
 
 @app.callback(
-    Output('bar-chart', 'figure'),
-    [Input('day-dropdown2', 'value'),
-     Input('vehicle-dropdown', 'value')]
+    Output('vehicle-counts-chart', 'figure'),
+    [Input('day-of-week-dropdown', 'value')]
 )
-def update_bar_chart(selected_day, selected_vehicle):
-    # Filter data by selected day and vehicle type
-    filtered_df = df[(df['day_of_week'] == selected_day) & (df['type'] == selected_vehicle)]
+
+def update_chart(day_of_week):
+    # Filter data for selected day of week
+    filtered_data = df[df['day_of_week'] == day_of_week]
     
-    # Group filtered data by type and sum the total count
-    grouped_df = filtered_df.groupby('type').sum(numeric_only=True).reset_index()
+    # Group by hour of day and calculate mean counts
+    mean_counts = filtered_data.groupby('hour_of_day').mean().reset_index()
     
-    # Create bar chart
-    fig = px.bar(grouped_df, x='type', y='total', title=f'{selected_vehicle} Count on {selected_day}')
+    # Exclude the 'total' column from the mean counts
+    mean_counts = mean_counts.drop(columns=['total'])
+    mean_counts = mean_counts.drop(columns=['day_of_week'])
+    # Create a stacked area chart
+    fig = go.Figure()
+    for col in mean_counts.columns[1:]:
+        fig.add_trace(go.Scatter(
+            x=mean_counts['hour_of_day'],
+            y=mean_counts[col],
+            mode='lines',
+            stackgroup='one',
+            name=col
+        ))
+    
+    # Update chart layout
+    fig.update_layout(
+        title='Mean Vehicle Counts by Hour of Day for {}'.format(day_of_week),
+        xaxis=dict(title='Hour of Day'),
+        yaxis=dict(title='Mean Vehicle Count'),
+        showlegend=True
+    )
     return fig
