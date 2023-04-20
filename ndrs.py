@@ -7,8 +7,9 @@ from dash.dependencies import Output, Input
 import pandas as pd
 from app import app
 import plotly.graph_objects as go
-
-
+import dash_table
+df1 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/top5max.csv')
+df2 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/top5min.csv')
 df = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/ndrs9-10_2022.csv')
 df['timestamp'] = pd.to_datetime(df['timestamp'])
 df['day_of_week'] = df['timestamp'].dt.day_of_week
@@ -88,6 +89,47 @@ ndrs_layout = html.Div([
     dbc.Row([
 
         dcc.Graph(id='vehicle-counts-chart')
+    ]),
+    
+    dbc.Row([
+        html.Div([
+            # dcc.Input(),
+            html.Br(),
+             ])
+    ]),
+    
+    
+    
+    
+    
+    
+    dbc.Row([
+    
+     html.H3('Top 5 days with the most number of cars'),
+        dash_table.DataTable(
+            id='table',
+            columns=[{"name": i, "id": i} for i in df1.columns],
+            data=df1.to_dict('records'),
+        ),
+    ], className='row'),
+
+    dbc.Row([
+        html.Div([
+            # dcc.Input(),
+            html.Br(),
+             ])
+    ]),
+    
+    
+    dbc.Row([
+     html.H3('Top 5 days with the least number of cars'),
+        dash_table.DataTable(
+            id='table',
+            columns=[{"name": i, "id": i} for i in df2.columns],
+            data=df2.to_dict('records')
+        ),
+    ], className='row')
+
     ])
 
 
@@ -105,7 +147,7 @@ ndrs_layout = html.Div([
 
 
 
-])
+
 
 @app.callback(
     dash.dependencies.Output('line-chart', 'figure'),
