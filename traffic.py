@@ -14,12 +14,13 @@ import dash_table
 
 #########################Traffic signal sensor at kasemrad junction###############################
 date = ['MON','TUE','WED','THU','FRI','SAT','SUN']
-jsonks = pd.read_json(r'C:\Users\whai\Desktop\Senior Project\dataplayground\dataplaygroundprototype\Signalkasem.json')['data']
-jsonkt = pd.read_json(r'C:\Users\whai\Desktop\Senior Project\dataplayground\dataplaygroundprototype\Signalkt.json')['data']
-jsonnr = pd.read_json(r'C:\Users\whai\Desktop\Senior Project\dataplayground\dataplaygroundprototype\Signalnara.json')['data']
+jsonks = pd.read_json(r'C:\Users\whai\Desktop\Senior Project\dataplayground\dataplaygroundprototype/ks.json')['data']
+jsonkt = pd.read_json(r'C:\Users\whai\Desktop\Senior Project\dataplayground\dataplaygroundprototype/kt.json')['data']
+jsonnr = pd.read_json(r'C:\Users\whai\Desktop\Senior Project\dataplayground\dataplaygroundprototype/nr.json')['data']
 data_ks = []
 data_kt = []
 data_nr = []
+#kasemrad
 #kasemrad
 for i in range (len(jsonks)):
     data_ks.append({'timestamp':jsonks[i]['timestamp'],
@@ -31,15 +32,7 @@ for i in range (len(jsonks)):
             'phase_6':jsonks[i]['data']['phase_6'],
             'phase_7':jsonks[i]['data']['phase_7'],
             'phase_8':jsonks[i]['data']['phase_8']})
-df_ks = pd.DataFrame(data_ks)
-df_ks.timestamp = pd.to_datetime(df_ks.timestamp)
-df_ks['day']=df_ks['timestamp'].dt.day_name()
-df_ks.set_index('timestamp',inplace = True)
-df_ksm = df_ks.between_time('7:00','10:00').groupby(by=['day']).mean()
-df_kse = df_ks.between_time('16:00','19:00').groupby(by=['day']).mean()
-df_ksm = df_ksm.reset_index()
-df_kse = df_kse.reset_index()
-# naranong
+
 for i in range (len(jsonnr)):
     data_nr.append({'timestamp':jsonnr[i]['timestamp'],
             'phase_1':jsonnr[i]['data']['phase_1'],
@@ -50,15 +43,6 @@ for i in range (len(jsonnr)):
             'phase_6':jsonnr[i]['data']['phase_6'],
             'phase_7':jsonnr[i]['data']['phase_7'],
             'phase_8':jsonnr[i]['data']['phase_8']})
-df_nr = pd.DataFrame(data_nr)
-df_nr.timestamp = pd.to_datetime(df_nr.timestamp)
-df_nr['day']=df_nr['timestamp'].dt.day_name()
-df_nr.set_index('timestamp',inplace = True)
-df_nrm = df_nr.between_time('7:00','10:00').groupby(by=['day']).mean()
-df_nre = df_nr.between_time('16:00','19:00').groupby(by=['day']).mean()
-df_nrm = df_nrm.reset_index()
-df_nre = df_nre.reset_index()
-# klongtoey
 for i in range (len(jsonkt)):
     data_kt.append({'timestamp':jsonkt[i]['timestamp'],
             'phase_1':jsonkt[i]['data']['phase_1'],
@@ -69,14 +53,95 @@ for i in range (len(jsonkt)):
             'phase_6':jsonkt[i]['data']['phase_6'],
             'phase_7':jsonkt[i]['data']['phase_7'],
             'phase_8':jsonkt[i]['data']['phase_8']})
+df_ks = pd.DataFrame(data_ks)
+df_ks.timestamp = pd.to_datetime(df_ks.timestamp)
+df_ks['day']=df_ks['timestamp'].dt.day_name()
+df_ks.set_index('timestamp',inplace = True)
+df_nr = pd.DataFrame(data_nr)
+df_nr.timestamp = pd.to_datetime(df_nr.timestamp)
+df_nr['day']=df_nr['timestamp'].dt.day_name()
+df_nr.set_index('timestamp',inplace = True)
+
 df_kt = pd.DataFrame(data_kt)
 df_kt.timestamp = pd.to_datetime(df_kt.timestamp)
 df_kt['day']=df_kt['timestamp'].dt.day_name()
 df_kt.set_index('timestamp',inplace = True)
-df_ktm = df_kt.between_time('7:00','10:00').groupby(by=['day']).mean()
-df_kte = df_kt.between_time('16:00','19:00').groupby(by=['day']).mean()
+
+
+##kasemrad
+df_ksm = df_ks.between_time("07:00:00", "10:00:00")
+df_kse = df_ks.between_time("16:00:00","19:00:00")
+##khlong toei
+df_ktm = df_kt.between_time("07:00:00", "10:00:00")
+df_kte = df_kt.between_time("16:00:00","19:00:00")
+### na ranong
+df_nrm = df_nr.between_time("07:00:00", "10:00:00")
+df_nre = df_nr.between_time("16:00:00","19:00:00")
+
+
+###############
+weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+df_ksm = df_ksm[df_ksm["day"].isin(weekdays)]
+df_kse = df_kse[df_kse["day"].isin(weekdays)]
+
+df_ktm = df_ktm[df_ktm["day"].isin(weekdays)]
+df_kte = df_kte[df_kte["day"].isin(weekdays)]
+
+df_nrm = df_nrm[df_nrm["day"].isin(weekdays)]
+df_nre = df_nre[df_nre["day"].isin(weekdays)]
+
+###
+df_ksm=df_ksm.reset_index().groupby(pd.Grouper(key='timestamp', axis=0, freq='D')).sum()
+
+
+
+df_kse=df_kse.reset_index().groupby(pd.Grouper(key='timestamp', axis=0, freq='D')).sum()
+
+
+####
+df_ktm=df_ktm.reset_index().groupby(pd.Grouper(key='timestamp', axis=0, freq='D')).sum()
+
+
+
+df_kte=df_kte.reset_index().groupby(pd.Grouper(key='timestamp', axis=0, freq='D')).sum()
+
+
+####3
+df_nrm=df_nrm.reset_index().groupby(pd.Grouper(key='timestamp', axis=0, freq='D')).sum()
+
+
+
+df_nre=df_nre.reset_index().groupby(pd.Grouper(key='timestamp', axis=0, freq='D')).sum()
+
+df_ksm = df_ksm.reset_index()
+df_ksm['day']=df_ksm['timestamp'].dt.day_name()
+df_kse = df_kse.reset_index()
+df_kse['day']=df_kse['timestamp'].dt.day_name()
+
 df_ktm = df_ktm.reset_index()
+df_ktm['day']=df_ktm['timestamp'].dt.day_name()
 df_kte = df_kte.reset_index()
+df_kte['day']=df_kte['timestamp'].dt.day_name()
+
+df_nrm = df_nrm.reset_index()
+df_nrm['day']=df_nrm['timestamp'].dt.day_name()
+df_nre = df_nre.reset_index()
+df_nre['day']=df_nre['timestamp'].dt.day_name()
+
+df_ksm =df_ksm.groupby(by=['day']).mean()/60
+df_ksm = df_ksm.reset_index()
+df_kse =df_kse.groupby(by=['day']).mean()/60
+df_kse = df_kse.reset_index()
+
+df_ktm =df_ktm.groupby(by=['day']).mean()/60
+df_ktm = df_ktm.reset_index()
+df_kte =df_kte.groupby(by=['day']).mean()/60
+df_kte = df_kte.reset_index()
+
+df_nrm =df_nrm.groupby(by=['day']).mean()/60
+df_nrm = df_nrm.reset_index()
+df_nre =df_nre.groupby(by=['day']).mean()/60
+df_nre = df_nre.reset_index()
 
 #######################################Layout##############################################
 tf_layout = html.Div(
@@ -88,11 +153,7 @@ tf_layout = html.Div(
              ])
     ]),
 
-    dbc.Row(
-        dbc.Col(html.H2("Traffic Signal Phase",
-                        className='text-center text-primary mb-4'),
-                width=12)
-    ),
+  
     dbc.Row([
         html.Div([
             # dcc.Input(),
@@ -102,7 +163,7 @@ tf_layout = html.Div(
              ])
     ]),
     dbc.Row([
-        html.H3('At Kasemrad Intersection',className='text-center text-primary mb-4'),
+        html.H3('Traffic Signal Phase At Kasemrad Junction',className='text-center text-primary mb-4'),
     ]),
      
 
@@ -133,11 +194,11 @@ tf_layout = html.Div(
     ]),
 
     dbc.Row([
-        dbc.Col(html.H4("Morning rush hour",
-                        className='text-center text-warning mb-4'),
+        dbc.Col(html.H4("Morning rush hour (7:00AM-10:00AM)",
+                        className='text-center text-danger mb-4'),
                 width=6),
-        dbc.Col(html.H4("Evening rush hour",
-                        className='text-center text-warning mb-4'),
+        dbc.Col(html.H4("Evening rush hour (16:00PM-19:00PM)",
+                        className='text-center text-danger mb-4'),
                 width=6),
                 ]),
 
@@ -167,7 +228,7 @@ tf_layout = html.Div(
     ]),
      
     dbc.Row([
-        html.H3('At Na Ranong Intersection',className='text-center text-primary mb-4'),
+        html.H3('Traffic Signal Phase At Na Ranong Junction',className='text-center text-primary mb-4'),
     ]), 
      
      
@@ -197,11 +258,11 @@ tf_layout = html.Div(
     ]),
 
     dbc.Row([
-        dbc.Col(html.H4("Morning rush hour",
-                        className='text-center text-warning mb-4'),
+        dbc.Col(html.H4("Morning rush hour (7:00AM-10:00AM)",
+                        className='text-center text-danger mb-4'),
                 width=6),
-        dbc.Col(html.H4("Evening rush hour",
-                        className='text-center text-warning mb-4'),
+        dbc.Col(html.H4("Evening rush hour (16:00PM-19:00PM)",
+                        className='text-center text-danger mb-4'),
                 width=6),
                 ]),
 
@@ -231,7 +292,7 @@ tf_layout = html.Div(
     ]),
      
     dbc.Row([
-        html.H3('At Khlong Toei Intersection',className='text-center text-primary mb-4'),
+        html.H3('Traffic Signal Phase At Khlong Toei Junction',className='text-center text-primary mb-4'),
     ]), 
      
      
@@ -267,11 +328,11 @@ tf_layout = html.Div(
     ]),
 
     dbc.Row([
-        dbc.Col(html.H4("Morning rush hour",
-                        className='text-center text-warning mb-4'),
+        dbc.Col(html.H4("Morning rush hour (7:00AM-10:00AM)",
+                        className='text-center text-danger mb-4'),
                 width=6),
-        dbc.Col(html.H4("Evening rush hour",
-                        className='text-center text-warning mb-4'),
+        dbc.Col(html.H4("Evening rush hour (16:00PM-19:00PM)",
+                        className='text-center text-danger mb-4'),
                 width=6),
                 ]),
 
@@ -302,7 +363,10 @@ def update_bar_chart(selected_day):
     filtered_data = df_ksm[df_ksm['day'] == selected_day]
     values = filtered_data.iloc[0, 1:].tolist()
     bar_chart = go.Bar(x=['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4'], y=values)
-    return {'data': [bar_chart]}
+    layout = {'yaxis': {'title': 'Minute'}}
+    return {'data': [bar_chart], 'layout': layout}
+
+    
     
     
 @app.callback(
@@ -312,7 +376,8 @@ def update_bar_chart_2(selected_day):
     filtered_data = df_kse[df_kse['day'] == selected_day]
     values = filtered_data.iloc[0, 1:].tolist()
     bar_chart = go.Bar(x=['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4'], y=values)
-    return {'data': [bar_chart]}
+    layout = {'yaxis': {'title': 'Minute'}}
+    return {'data': [bar_chart], 'layout': layout}
 
 ###
 @app.callback(
@@ -323,7 +388,9 @@ def update_bar_chart3(selected_day):
     filtered_data = df_nrm[df_nrm['day'] == selected_day]
     values = filtered_data.iloc[0, 1:].tolist()
     bar_chart = go.Bar(x=['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4','Phase 5','Phase 6','Phase 7','Phase 8'], y=values)
-    return {'data': [bar_chart]}
+    layout = {'yaxis': {'title': 'Minute'}}
+    return {'data': [bar_chart], 'layout': layout}
+
     
     
 @app.callback(
@@ -333,7 +400,9 @@ def update_bar_chart4(selected_day):
     filtered_data = df_nre[df_nre['day'] == selected_day]
     values = filtered_data.iloc[0, 1:].tolist()
     bar_chart = go.Bar(x=['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4','Phase 5','Phase 6','Phase 7','Phase 8'], y=values)
-    return {'data': [bar_chart]}
+    layout = {'yaxis': {'title': 'Minute'}}
+    return {'data': [bar_chart], 'layout': layout}
+
 
 
 
@@ -346,7 +415,9 @@ def update_bar_chart5(selected_day):
     filtered_data = df_ktm[df_ktm['day'] == selected_day]
     values = filtered_data.iloc[0, 1:].tolist()
     bar_chart = go.Bar(x=['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4','Phase 5','Phase 6','Phase 7','Phase 8'], y=values)
-    return {'data': [bar_chart]}
+    layout = {'yaxis': {'title': 'Minute'}}
+    return {'data': [bar_chart], 'layout': layout}
+
     
     
 @app.callback(
@@ -356,4 +427,5 @@ def update_bar_chart6(selected_day):
     filtered_data = df_kte[df_kte['day'] == selected_day]
     values = filtered_data.iloc[0, 1:].tolist()
     bar_chart = go.Bar(x=['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4','Phase 5','Phase 6','Phase 7','Phase 8'], y=values)
-    return {'data': [bar_chart]}
+    layout = {'yaxis': {'title': 'Minute'}}
+    return {'data': [bar_chart], 'layout': layout}
