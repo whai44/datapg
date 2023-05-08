@@ -194,10 +194,10 @@ tf_layout = html.Div(
     ]),
 
     dbc.Row([
-        dbc.Col(html.H4("Morning rush hour (7:00AM-10:00AM)",
+        dbc.Col(html.H4("Morning rush hours (7:00AM-10:00AM)",
                         className='text-center text-danger mb-4'),
                 width=6),
-        dbc.Col(html.H4("Evening rush hour (16:00PM-19:00PM)",
+        dbc.Col(html.H4("Evening rush hours (4:00PM-7:00PM)",
                         className='text-center text-danger mb-4'),
                 width=6),
                 ]),
@@ -258,10 +258,10 @@ tf_layout = html.Div(
     ]),
 
     dbc.Row([
-        dbc.Col(html.H4("Morning rush hour (7:00AM-10:00AM)",
+        dbc.Col(html.H4("Morning rush hours (7:00AM-10:00AM)",
                         className='text-center text-danger mb-4'),
                 width=6),
-        dbc.Col(html.H4("Evening rush hour (16:00PM-19:00PM)",
+        dbc.Col(html.H4("Evening rush hours (4:00PM-7:00PM)",
                         className='text-center text-danger mb-4'),
                 width=6),
                 ]),
@@ -328,10 +328,10 @@ tf_layout = html.Div(
     ]),
 
     dbc.Row([
-        dbc.Col(html.H4("Morning rush hour (7:00AM-10:00AM)",
+        dbc.Col(html.H4("Morning rush hours (7:00AM-10:00AM)",
                         className='text-center text-danger mb-4'),
                 width=6),
-        dbc.Col(html.H4("Evening rush hour (16:00PM-19:00PM)",
+        dbc.Col(html.H4("Evening rush hours (4:00PM-7:00PM)",
                         className='text-center text-danger mb-4'),
                 width=6),
                 ]),
@@ -363,7 +363,7 @@ def update_bar_chart(selected_day):
     filtered_data = df_ksm[df_ksm['day'] == selected_day]
     values = filtered_data.iloc[0, 1:].tolist()
     bar_chart = go.Bar(x=['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4'], y=values)
-    layout = {'yaxis': {'title': 'Minute'}}
+    layout = {'yaxis': {'title': 'Minutes'}}
     return {'data': [bar_chart], 'layout': layout}
 
     
@@ -376,7 +376,7 @@ def update_bar_chart_2(selected_day):
     filtered_data = df_kse[df_kse['day'] == selected_day]
     values = filtered_data.iloc[0, 1:].tolist()
     bar_chart = go.Bar(x=['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4'], y=values)
-    layout = {'yaxis': {'title': 'Minute'}}
+    layout = {'yaxis': {'title': 'Minutes'}}
     return {'data': [bar_chart], 'layout': layout}
 
 ###
@@ -388,7 +388,7 @@ def update_bar_chart3(selected_day):
     filtered_data = df_nrm[df_nrm['day'] == selected_day]
     values = filtered_data.iloc[0, 1:].tolist()
     bar_chart = go.Bar(x=['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4','Phase 5','Phase 6','Phase 7','Phase 8'], y=values)
-    layout = {'yaxis': {'title': 'Minute'}}
+    layout = {'yaxis': {'title': 'Minutes'}}
     return {'data': [bar_chart], 'layout': layout}
 
     
@@ -400,7 +400,7 @@ def update_bar_chart4(selected_day):
     filtered_data = df_nre[df_nre['day'] == selected_day]
     values = filtered_data.iloc[0, 1:].tolist()
     bar_chart = go.Bar(x=['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4','Phase 5','Phase 6','Phase 7','Phase 8'], y=values)
-    layout = {'yaxis': {'title': 'Minute'}}
+    layout = {'yaxis': {'title': 'Minutes'}}
     return {'data': [bar_chart], 'layout': layout}
 
 
@@ -415,7 +415,7 @@ def update_bar_chart5(selected_day):
     filtered_data = df_ktm[df_ktm['day'] == selected_day]
     values = filtered_data.iloc[0, 1:].tolist()
     bar_chart = go.Bar(x=['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4','Phase 5','Phase 6','Phase 7','Phase 8'], y=values)
-    layout = {'yaxis': {'title': 'Minute'}}
+    layout = {'yaxis': {'title': 'Minutes'}}
     return {'data': [bar_chart], 'layout': layout}
 
     
@@ -427,5 +427,5 @@ def update_bar_chart6(selected_day):
     filtered_data = df_kte[df_kte['day'] == selected_day]
     values = filtered_data.iloc[0, 1:].tolist()
     bar_chart = go.Bar(x=['Phase 1', 'Phase 2', 'Phase 3', 'Phase 4','Phase 5','Phase 6','Phase 7','Phase 8'], y=values)
-    layout = {'yaxis': {'title': 'Minute'}}
+    layout = {'yaxis': {'title': 'Minutes'}}
     return {'data': [bar_chart], 'layout': layout}

@@ -17,8 +17,10 @@ df['hour_of_day'] = df['timestamp'].dt.hour
 car_type_data = df.groupby(df['timestamp'].dt.day_name())[['car']].sum()
 car_type_data['percentage'] = car_type_data['car'] / car_type_data['car'].sum() * 100
 vehicle_types = ['7up',	'bus',	'car',	'motorcycle',	'pickup'	,'trailer'	,'truck'	] 
-ndrslo = {'Point': ['1', '2', '3','4','5'],
-        'Name': ['Kasemrad Intersection','Ratchadaphisek Road','Khlong Toei Intersection','Near Na Ranong Intersection','Near Sunlakakon Intersection'],
+ndrslo = {'Location': ['1', '2', '3','4','5'],
+        'Name': ['Soi Ari, BigC Rama4','Ratchadaphisek Road, Ocean Tower 1',
+                 'Khlong Toei Intersection ',
+                 'Rama 3 Road, Soi 85','the Port Authority of Thailand Building'],
         }
 dfndrslo = pd.DataFrame(ndrslo)
 dfndrslo.style.set_properties(**{'text-align': 'center'})
@@ -55,7 +57,7 @@ ndrs_layout = html.Div([
          html.Br(),
          html.Br(),
          html.Br(),
-          html.H3('Sensors Locations'),
+          html.H3('Sensor Locations'),
         dash_table.DataTable(
             id='table',
             columns=[{"name": i, "id": i} for i in dfndrslo.columns],
@@ -82,7 +84,7 @@ ndrs_layout = html.Div([
     
     
     dbc.Row([
-        html.H3('Point 1: Kasemrad Intersection'),
+        html.H3('Location 1: Kasemrad Intersection'),
         dbc.Col([
     
     
@@ -215,8 +217,8 @@ def update_line_chart(days):
 
     # Create a line chart with Plotly Express
     fig = px.line(df_selected_days_by_day_hour, x='timestamp', y='total',
-                  color='day of week', labels={'timestamp': 'Hour of Day', 'total': 'Mean Car Count'},
-                  title='Mean vehicles count by hour on selected days')
+                  color='day of week', labels={'timestamp': 'Hour of Day (6:00AM - 20:00PM)', 'total': 'Number of vehicles'},
+                  title='Mean vehicles count per minute on selected days')
 
     return fig
         
@@ -249,9 +251,9 @@ def update_chart(day_of_week):
     
     # Update chart layout
     fig.update_layout(
-        title='Mean types of vehicle counts by hour on selected days'.format(day_of_week),
-        xaxis=dict(title='Hour of Day'),
-        yaxis=dict(title='Mean Vehicle Count'),
+        title='Mean types of vehicle counts per minute on selected days'.format(day_of_week),
+        xaxis=dict(title='Hour of Day (6:00AM - 20:00PM)'),
+        yaxis=dict(title='Number of vehicles'),
         showlegend=True
     )
     return fig
