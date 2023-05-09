@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 # import dash_table
 from dash import dash_table
 import requests
-
+import io
 
 url = "https://github.com/pimmrp/rama4dataplayground/raw/master/01max.csv"
 response = requests.get(url).content
