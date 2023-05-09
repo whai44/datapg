@@ -9,49 +9,124 @@ from app import app
 import plotly.graph_objects as go
 # import dash_table
 from dash import dash_table
+import requests
+
+
+url = "https://github.com/pimmrp/rama4dataplayground/raw/master/01max.csv"
+response = requests.get(url).content
+dfmax1 = pd.read_csv(io.StringIO(response.decode('utf-8')))
+
+url1 = "https://github.com/pimmrp/rama4dataplayground/raw/master/01min.csv"
+response1 = requests.get(url1).content
+dfmin1 = pd.read_csv(io.StringIO(response1.decode('utf-8')))
+
+url2 = "https://github.com/pimmrp/rama4dataplayground/raw/master/Dec01.csv"
+response2 = requests.get(url2).content
+df1 = pd.read_csv(io.StringIO(response2.decode('utf-8')))
+###############################33
+url3 = "https://github.com/pimmrp/rama4dataplayground/raw/master/02max.csv"
+response3 = requests.get(url3).content
+dfmax2 = pd.read_csv(io.StringIO(response3.decode('utf-8')))
+
+url4 = "https://github.com/pimmrp/rama4dataplayground/raw/master/02min.csv"
+response4 = requests.get(url4).content
+dfmin2 = pd.read_csv(io.StringIO(response4.decode('utf-8')))
+
+url5 = "https://github.com/pimmrp/rama4dataplayground/raw/master/Dec02.csv"
+response5 = requests.get(url5).content
+df2 = pd.read_csv(io.StringIO(response5.decode('utf-8')))
+########################################
+url6 = "https://github.com/pimmrp/rama4dataplayground/raw/master/03max.csv"
+response6 = requests.get(url6).content
+dfmax3 = pd.read_csv(io.StringIO(response6.decode('utf-8')))
+
+url7 = "https://github.com/pimmrp/rama4dataplayground/raw/master/03min.csv"
+response7 = requests.get(url7).content
+dfmin3 = pd.read_csv(io.StringIO(response7.decode('utf-8')))
+
+url8 = "https://github.com/pimmrp/rama4dataplayground/raw/master/Dec03.csv"
+response8= requests.get(url8).content
+df3 = pd.read_csv(io.StringIO(response8.decode('utf-8')))
+##################################################
+url9 = "https://github.com/pimmrp/rama4dataplayground/raw/master/04max.csv"
+response9 = requests.get(url9).content
+dfmax4 = pd.read_csv(io.StringIO(response9.decode('utf-8')))
+
+url10 = "https://github.com/pimmrp/rama4dataplayground/raw/master/04min.csv"
+response10 = requests.get(url10).content
+dfmin4 = pd.read_csv(io.StringIO(response10.decode('utf-8')))
+
+url11 = "https://github.com/pimmrp/rama4dataplayground/raw/master/Dec04.csv"
+response11 = requests.get(url11).content
+df4 = pd.read_csv(io.StringIO(response11.decode('utf-8')))
+##################################################
+url12 = "https://github.com/pimmrp/rama4dataplayground/raw/master/05max.csv"
+response12 = requests.get(url12).content
+dfmax5 = pd.read_csv(io.StringIO(response12.decode('utf-8')))
+
+url13 = "https://github.com/pimmrp/rama4dataplayground/raw/master/05min.csv"
+response13 = requests.get(url13).content
+dfmin5 = pd.read_csv(io.StringIO(response13.decode('utf-8')))
+
+url14 = "https://github.com/pimmrp/rama4dataplayground/raw/master/Dec05.csv"
+response14 = requests.get(url14).content
+df5 = pd.read_csv(io.StringIO(response14.decode('utf-8')))
+##################################################
+url15 = "https://github.com/pimmrp/rama4dataplayground/raw/master/06max.csv"
+response15 = requests.get(url15).content
+dfmax6 = pd.read_csv(io.StringIO(response15.decode('utf-8')))
+
+url16 = "https://github.com/pimmrp/rama4dataplayground/raw/master/06min.csv"
+response16 = requests.get(url16).content
+dfmin6 = pd.read_csv(io.StringIO(response16.decode('utf-8')))
+
+url17 = "https://github.com/pimmrp/rama4dataplayground/raw/master/Dec06.csv"
+response17 = requests.get(url17).content
+df6 = pd.read_csv(io.StringIO(response17.decode('utf-8')))
+
 
 ###################################333
-dfmax1 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/01max.csv')
-dfmin1 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/01min.csv')
-df1 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/Dec01.csv')
+# dfmax1 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/01max.csv')
+# dfmin1 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/01min.csv')
+# df1 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/Dec01.csv')
 df1['timestamp'] = pd.to_datetime(df1['timestamp'])
 df1['day of week'] = df1['timestamp'].dt.day_of_week
 df1['hour_of_day'] = df1['timestamp'].dt.hour
-###################################333
-dfmax2 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/02max.csv')
-dfmin2 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/02min.csv')
-df2 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/Dec02.csv')
+# ###################################333
+# dfmax2 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/02max.csv')
+# dfmin2 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/02min.csv')
+# df2 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/Dec02.csv')
 df2['timestamp'] = pd.to_datetime(df2['timestamp'])
 df2['day of week'] = df2['timestamp'].dt.day_of_week
 df2['hour_of_day'] = df2['timestamp'].dt.hour
-###################################333
-dfmax3 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/03max.csv')
-dfmin3 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/03min.csv')
-df3 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/Dec03.csv')
+# ###################################333
+# dfmax3 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/03max.csv')
+# dfmin3 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/03min.csv')
+# df3 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/Dec03.csv')
 df3['timestamp'] = pd.to_datetime(df3['timestamp'])
 df3['day of week'] = df3['timestamp'].dt.day_of_week
 df3['hour_of_day'] = df3['timestamp'].dt.hour
 
-###################################333
-dfmax4 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/04max.csv')
-dfmin4 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/04min.csv')
-df4 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/Dec04.csv')
+# ###################################333
+# dfmax4 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/04max.csv')
+# dfmin4 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/04min.csv')
+# df4 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/Dec04.csv')
 df4['timestamp'] = pd.to_datetime(df4['timestamp'])
 df4['day of week'] = df4['timestamp'].dt.day_of_week
 df4['hour_of_day'] = df4['timestamp'].dt.hour
 
-###################################333
-dfmax5 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/05max.csv')
-dfmin5 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/05min.csv')
-df5 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/Dec05.csv')
+# ###################################333
+# dfmax5 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/05max.csv')
+# dfmin5 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/05min.csv')
+# df5 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/Dec05.csv')
 df5['timestamp'] = pd.to_datetime(df5['timestamp'])
 df5['day of week'] = df5['timestamp'].dt.day_of_week
 df5['hour_of_day'] = df5['timestamp'].dt.hour
 
-###################################333
-dfmax6 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/06max.csv')
-dfmin6 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/06min.csv')
-df6 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/Dec06.csv')
+# ###################################333
+# dfmax6 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/06max.csv')
+# dfmin6 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/06min.csv')
+# df6 = pd.read_csv(r'C:/Users/whai/Desktop/Senior Project/dataplayground/Dec06.csv')
 df6['timestamp'] = pd.to_datetime(df6['timestamp'])
 df6['day of week'] = df6['timestamp'].dt.day_of_week
 df6['hour_of_day'] = df6['timestamp'].dt.hour
